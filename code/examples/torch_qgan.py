@@ -1,3 +1,18 @@
+# (C) Copyright IBM 2024.
+#
+# This code is licensed under the Apache License, Version 2.0. You may
+# obtain a copy of this license in the LICENSE.txt file in the root directory
+# of this source tree or at http://www.apache.org/licenses/LICENSE-2.0.
+#
+# Any modifications or derivative works of this code must retain this
+# copyright notice, and modified files need to carry a notice indicating
+# that they have been altered from the originals.
+
+
+"""
+This file demonstrates how to train a qGAN with pyTorch and Qiskit capabilities.
+"""
+
 import time
 import pickle
 from scipy.stats import entropy
@@ -121,7 +136,8 @@ if warm_start == True:
         generator_loss_values = plotting_losses[0]
         discriminator_loss_values = plotting_losses[1]
         entropy_values = plotting_losses[2]
-    generator = Generator(qc, qc.parameters, [], shots=gen_batch_size, seed=seed, initial_weights=generator_weights[-1],)
+    generator = Generator(qc, qc.parameters, [], shots=gen_batch_size, seed=seed,
+                          initial_weights=generator_weights[-1])
 
 else:
     generator = Generator(qc, qc.parameters, [], shots=gen_batch_size, seed=seed)
@@ -226,7 +242,8 @@ for epoch in range(n_epochs):
         coeffs_all.append(coeffs_orders)
         plotting_grads = (orders, grads_all, coeffs_all)
 
-    if epoch % 10 == 0: # Print runtime + pickle
+    # Print runtime + pickle
+    if epoch % 10 == 0:
         runtime = time.time()-start_time
         print("Epoch: " + str(epoch) + ". Runtime: " + str(int(runtime)) + " seconds.")
         plotting_losses = [generator_loss_values, discriminator_loss_values, entropy_values]
